@@ -16,7 +16,8 @@ class ExpenseManager {
 
   async getAllExpense(req) {
     const userId = req.user.userID;
-    return await ExpenseData.fetchExpensesByUser(userId);
+    const { p_category, p_fromDate, p_toDate } = req.body;
+    return await ExpenseData.fetchExpensesByUser(userId,p_category, p_fromDate, p_toDate);
   }
 
   async deleteExpense(expenseId) {

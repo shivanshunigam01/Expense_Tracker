@@ -8,7 +8,7 @@ const authMiddleware = require('../middleware/auth.middleware');
 router.post("/add", authMiddleware, expenseController.addExpense);
 
 // Get All Expenses
-router.get("/all", authMiddleware, expenseController.getAllExpense);
+router.post("/all", authMiddleware, expenseController.getAllExpense);
 
 // Delete Expense
 router.delete("/:id", authMiddleware, expenseController.deleteExpense);

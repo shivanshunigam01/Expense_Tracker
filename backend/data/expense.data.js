@@ -12,8 +12,14 @@ class ExpenseData {
     return result;
   }
 
-  static async fetchExpensesByUser(userId) {
-    const [result] = await db.execute("CALL usp_getAllExpense(?)", [userId]);
+  static async fetchExpensesByUser(userId, category = null, fromDate = null, toDate = null) {
+    console.log("catoe")
+    const [result] = await db.execute("CALL usp_getAllExpense(?, ?, ?, ?)", [
+      userId,
+      category,
+      fromDate,
+      toDate,
+    ]);
     return result[0];
   }
 

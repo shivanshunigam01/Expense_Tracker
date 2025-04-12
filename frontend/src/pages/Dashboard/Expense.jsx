@@ -9,6 +9,7 @@ import AddExpenseForm from "../../components/Expense/AddExpenseForm";
 import Model from "../../components/Model";
 import ExpenseList from "../../components/Expense/ExpenseList";
 import DeleteAlert from "../../components/DeleteAlert";
+import ExpenseFilter from "../../components/Expense/ExpenseFilter";
 
 const Expense = () => {
   useUserAuth();
@@ -19,21 +20,47 @@ const Expense = () => {
     data: null,
   });
   const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
+  const [filters, setFilters] = useState({
+    category: "",
+    fromDate: new Date(new Date().setDate(1)).toISOString().split('T')[0], // First day of current month
+    toDate: new Date().toISOString().split('T')[0], // Today
+  });
 
-  // Fetch all expense details
-  const fetchExpenseDetails = async () => {
+  // Extract unique categories from expense data for filter dropdown
+  const categories = React.useMemo(() => {
+    const uniqueCategories = [...new Set(expenseData.map(expense => expense.category))];
+    return uniqueCategories;
+  }, [expenseData]);
+
+  const fetchExpenseDetails = async (filterParams = filters) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response = await axiosInstence.get(API_PATHS.EXPENSE.GET_ALL_EXPENSE);
-      if (response.data && response.data.data) {
-        setExpenseData(response.data.data);
-      }
+        // Use filter parameters in the request
+        const requestBody = {
+            p_userId: 1, // You might want to make this dynamic based on the logged-in user
+            p_category: filterParams.category || null,
+            p_fromDate: filterParams.fromDate,
+            p_toDate: filterParams.toDate
+        };
+
+        const response = await axiosInstence.post(API_PATHS.EXPENSE.GET_ALL_EXPENSE, requestBody);
+
+        if (response.data && response.data.data) {
+            setExpenseData(response.data.data);
+        }
     } catch (error) {
-      console.log("Something went wrong", error);
+        console.log("Something went wrong", error);
+        toast.error("Failed to fetch expense details.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
+  };
+
+  // Handle filter changes
+  const handleApplyFilters = (newFilters) => {
+    setFilters(newFilters);
+    fetchExpenseDetails(newFilters);
   };
 
   // Handle Add expense
@@ -82,7 +109,6 @@ const Expense = () => {
 
   // Delete expense
   const deleteExpense = async (id) => {
-    debugger
     const expenseId = Number(id);
     if (!expenseId || isNaN(expenseId)) {
       toast.error("Invalid expense ID.");
@@ -103,9 +129,18 @@ const Expense = () => {
   // Handle download
   const handleDownloadIncomeDetails = async () => {
     try {
-      const response = await axiosInstence.get(API_PATHS.EXPENSE.DOWNLOAD_EXPENSE, {
-        responseType: "blob",
-      });
+      // Include current filters in the download request
+      const queryParams = new URLSearchParams({
+        category: filters.category || '',
+        fromDate: filters.fromDate,
+        toDate: filters.toDate
+      }).toString();
+      
+      const response = await axiosInstence.get(
+        `${API_PATHS.EXPENSE.DOWNLOAD_EXPENSE}?${queryParams}`, 
+        { responseType: "blob" }
+      );
+      
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -132,6 +167,12 @@ const Expense = () => {
             transactions={expenseData}
             onExpenseIncome={() => setOpenAddExpenseModel(true)}
           />
+          
+          {/* Add the new ExpenseFilter component */}
+          <ExpenseFilter 
+            categories={categories} 
+            onApplyFilters={handleApplyFilters} 
+          />
 
           <ExpenseList
             transactions={expenseData}
@@ -144,6 +185,7 @@ const Expense = () => {
               }
             }}
             onDownload={handleDownloadIncomeDetails}
+            loading={loading}
           />
         </div>
 
