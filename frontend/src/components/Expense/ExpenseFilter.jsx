@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { format, isAfter, isBefore, parseISO } from "date-fns";
-
-const ExpenseFilter = ({ onApplyFilters, categories }) => {
+import React, { useState, useEffect } from "react";
+import { format, isAfter, parseISO } from "date-fns";
+import { API_PATHS } from "../../utils/apiPaths";
+import axiosInstence from "../../utils/axiosInstance";
+const ExpenseFilter = ({ onApplyFilters }) => {
   const defaultFilters = {
     category: "",
     fromDate: format(new Date().setDate(1), "yyyy-MM-dd"), // First day of current month
@@ -11,19 +12,36 @@ const ExpenseFilter = ({ onApplyFilters, categories }) => {
   const [filters, setFilters] = useState(defaultFilters);
   const [isOpen, setIsOpen] = useState(false);
   const [dateError, setDateError] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // List of expense categories (you can replace this with your actual categories)
-  const expenseCategories = categories || [
-    "All",
-    "Food",
-    "Transport",
-    "Entertainment",
-    "Shopping",
-    "Utilities",
-    "Housing",
-    "Healthcare",
-    "Others"
-  ];
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setIsLoading(true);
+      setError("");
+      
+      try {
+        const response = await axiosInstence.get(API_PATHS.EXPENSE.GET_CATEGORY);
+        
+        if (response.data && response.data.success) {
+          // Extract categories from response
+          const fetchedCategories = response.data.data.map(item => item.category);
+          setCategories(fetchedCategories);
+        } else {
+          setError("Failed to fetch categories");
+        }
+      } catch (err) {
+        setError("Error fetching categories: " + (err.message || "Unknown error"));
+        console.error("Error fetching categories:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,19 +129,25 @@ const ExpenseFilter = ({ onApplyFilters, categories }) => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Category
               </label>
-              <select
-                name="category"
-                value={filters.category}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">All Categories</option>
-                {expenseCategories.map((category) => (
-                  <option key={category} value={category === "All" ? "" : category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              {isLoading ? (
+                <div className="mt-1 px-3 py-2 text-gray-500">Loading categories...</div>
+              ) : error ? (
+                <div className="mt-1 px-3 py-2 text-red-500 text-sm">{error}</div>
+              ) : (
+                <select
+                  name="category"
+                  value={filters.category}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
 
             <div>
@@ -166,7 +190,7 @@ const ExpenseFilter = ({ onApplyFilters, categories }) => {
           <div className="flex justify-end space-x-2 mt-4">
             <button
               onClick={handleApply}
-              className="px-4 py-2 border border-transparent rounded-md shadow- text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Apply Filters
             </button>

@@ -20,6 +20,27 @@ exports.getAllExpense = async (req, res) => {
   }
 };
 
+
+exports.getCategory = async (req, res) => {
+    try {
+      const result = await expenseManager.getCategory(req);
+      return apiResponse.successResponseWithData(res, "Category fetched", result);
+    } catch (error) {
+      return apiResponse.expectationFailedResponse(res, error.message);
+    }
+  };
+
+
+  exports.getstatistics = async (req, res) => {
+    try {
+      const result = await expenseManager.getstatistics(req);
+      return apiResponse.successResponseWithData(res, "Statistics fetched", result);
+    } catch (error) {
+      return apiResponse.expectationFailedResponse(res, error.message);
+    }
+  };
+  
+
 exports.deleteExpense = async (req, res) => {
   try {
     const result = await expenseManager.deleteExpense(req.params.id);

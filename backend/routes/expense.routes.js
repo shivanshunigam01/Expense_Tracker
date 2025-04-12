@@ -10,6 +10,13 @@ router.post("/add", authMiddleware, expenseController.addExpense);
 // Get All Expenses
 router.post("/all", authMiddleware, expenseController.getAllExpense);
 
+//Get Category
+router.get("/getCategory", authMiddleware, expenseController.getCategory);
+
+//Get statistics
+router.get("/getStatistics", authMiddleware, expenseController.getstatistics);
+
+
 // Delete Expense
 router.delete("/:id", authMiddleware, expenseController.deleteExpense);
 

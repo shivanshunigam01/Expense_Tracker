@@ -20,6 +20,17 @@ class ExpenseManager {
     return await ExpenseData.fetchExpensesByUser(userId,p_category, p_fromDate, p_toDate);
   }
 
+  async getCategory(req) {
+    const userId = req.user.userID;
+    return await ExpenseData.fetchCategoryByUser(userId);
+  }
+
+
+  
+  async getstatistics(req) {
+    const userId = req.user.userID;
+    return await ExpenseData.fetchStatisticsByUser(userId);
+  }
   async deleteExpense(expenseId) {
     return await ExpenseData.removeExpense(expenseId);
   }

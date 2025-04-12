@@ -13,7 +13,6 @@ class ExpenseData {
   }
 
   static async fetchExpensesByUser(userId, category = null, fromDate = null, toDate = null) {
-    console.log("catoe")
     const [result] = await db.execute("CALL usp_getAllExpense(?, ?, ?, ?)", [
       userId,
       category,
@@ -23,6 +22,23 @@ class ExpenseData {
     return result[0];
   }
 
+
+  static async fetchCategoryByUser(userID) {
+    const [result] = await db.execute("CALL usp_getExpenseCategories(?)", [
+        userID,
+    ]);
+    return result[0];
+  }
+
+
+  
+  static async fetchStatisticsByUser(userID) {
+    const [result] = await db.execute("CALL usp_getUserStatisticsByUserId(?)", [
+        userID,
+    ]);
+    return result;
+  }
+  
   static async removeExpense(expenseId) {
     const [result] = await db.execute("CALL usp_deleteExpenseById(?)", [expenseId]);
     return result;
