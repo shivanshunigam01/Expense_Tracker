@@ -17,7 +17,6 @@ A comprehensive full-stack **Expense Tracker** application built with modern web
 - **Comprehensive Tracking** - Record both expenses and income with detailed categorization
 - **Powerful Analytics** - Visualize spending patterns and identify financial trends
 - **Predictive Insights** - Forecast future spending based on historical data
-- **Report Generation** - Download detailed financial reports for your records
 
 ## 🚀 Features
 
@@ -26,10 +25,9 @@ A comprehensive full-stack **Expense Tracker** application built with modern web
 | 💰 Expense Management | Add, edit, and categorize all your expenses |
 | 💵 Income Tracking | Record all sources of income with detailed information |
 | 📊 Visual Analytics | Interactive charts and graphs to visualize your financial data |
-| 🔮 Predictive Analysis | AI-powered spending predictions based on your history |
+| 🔮 Predictive Analysis | Spending predictions based on your history |
 | 📱 Responsive Design | Seamless experience across desktop and mobile devices |
 | 🔒 Secure Authentication | Enterprise-grade security for your financial data |
-| 📄 Report Generation | Export detailed financial reports in multiple formats |
 
 ## 🛠️ Technology Stack
 
@@ -47,7 +45,7 @@ A comprehensive full-stack **Expense Tracker** application built with modern web
 - **JWT Authentication** - Secure, stateless authentication
 
 ### Database
-- **SQL** (MySQL / PostgreSQL / SQLite) - Robust relational data storage
+- **SQL** - Robust relational data storage (You can find the dump here: Expense_Trackers\backend\database\expense_trackerFull.sql)
 
 ## 🔐 Security Implementation
 
@@ -69,7 +67,7 @@ Our authentication system prioritizes security:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/expense-tracker.git
+   git clone https://github.com/shivanshunigam01/expense-tracker.git
    cd expense-tracker
    ```
 
