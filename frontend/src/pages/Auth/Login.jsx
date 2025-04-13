@@ -32,6 +32,9 @@ function Login() {
 
         setError("");
 
+        /*Declared key directly because .env file can't be pushed        
+         BY- SHIVANSHU NIGAM :)
+         */
         const secretKey = "sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#";
         const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
 
@@ -46,7 +49,7 @@ function Login() {
             if (token) {
                 localStorage.setItem("token", token);
 
-                
+
                 dispatch({
                     type: LOGIN,
                     payload: {
