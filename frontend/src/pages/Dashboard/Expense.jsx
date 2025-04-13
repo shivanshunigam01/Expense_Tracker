@@ -34,24 +34,24 @@ const Expense = () => {
     const fetchExpenseDetails = async (filterParams = filters) => {
         if (loading) return;
         setLoading(true);
-    
+
         try {
             const requestBody = {
                 p_category: filterParams?.category?.trim() ? filterParams.category : null,
             };
-    
-            // Only include fromDate and toDate if user actually applied them
+
+
             if (filterParams?.fromDate) {
                 requestBody.p_fromDate = filterParams.fromDate;
             }
             if (filterParams?.toDate) {
                 requestBody.p_toDate = filterParams.toDate;
             }
-    
+
             const response = await axiosInstence.post(API_PATHS.EXPENSE.GET_ALL_EXPENSE, requestBody);
-    
+
             if (response.data && response.data.data) {
-                console.log("asdasdas",response.data.data)
+                console.log("asdasdas", response.data.data)
                 setExpenseData(response.data.data);
             } else {
                 setExpenseData([]);
@@ -63,7 +63,7 @@ const Expense = () => {
             setLoading(false);
         }
     };
-    
+
     // Handle filter changes
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
