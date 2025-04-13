@@ -58,7 +58,7 @@ CREATE TABLE `expenses` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES (1,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Food',1201,'2025-04-02 13:15:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(2,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Rent',10000,'2025-04-01 09:00:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(3,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Transport',800,'2025-04-03 08:45:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(5,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:10:30','2025-04-12 22:59:35'),(6,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:11:00','2025-04-12 22:59:35'),(7,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:11:03','2025-04-12 22:59:35'),(8,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Food',1201,'2025-04-02 13:15:00','2025-04-12 19:12:17','2025-04-12 22:59:35'),(10,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/2764-fe0f.png','Anniversary',5000,'2025-04-24 00:00:00','2025-04-12 19:31:22','2025-04-13 03:39:31'),(13,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Test March Expense',10000,'2025-03-10 10:00:00','2025-04-13 03:35:35','2025-04-13 03:35:35'),(14,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Test March Expense',10000,'2025-03-10 10:00:00','2025-04-13 03:35:53','2025-04-13 03:35:53');
+INSERT INTO `expenses` VALUES (1,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Food',1201,'2025-04-02 13:15:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(2,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Rent',10000,'2025-04-01 09:00:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(3,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Transport',800,'2025-04-03 08:45:00','2025-04-12 16:31:39','2025-04-12 22:59:35'),(5,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:10:30','2025-04-12 22:59:35'),(6,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:11:00','2025-04-12 22:59:35'),(7,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Gift',5000,'2025-04-10 18:45:00','2025-04-12 19:11:03','2025-04-12 22:59:35'),(8,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Food',1201,'2025-04-02 13:15:00','2025-04-12 19:12:17','2025-04-12 22:59:35'),(10,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/2764-fe0f.png','Anniversary',5000,'2025-04-24 00:00:00','2025-04-12 19:31:22','2025-04-13 03:39:31'),(13,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Test March Expense',10000,'2025-03-10 10:00:00','2025-04-13 03:35:35','2025-04-13 03:35:35'),(14,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f911.png','Test March Expense',10000,'2025-03-10 10:00:00','2025-04-13 03:35:53','2025-04-13 03:35:53'),(15,7,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f958.png','Food and breverages',10000,'2025-04-23 00:00:00','2025-04-13 16:32:03','2025-04-13 16:32:03'),(16,7,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f60a.png','TEST',6544,'2025-04-16 00:00:00','2025-04-13 18:11:16','2025-04-13 18:11:16');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `income` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `income_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `income` (
 
 LOCK TABLES `income` WRITE;
 /*!40000 ALTER TABLE `income` DISABLE KEYS */;
-INSERT INTO `income` VALUES (1,1,'?','Salary',9000.00,'2025-04-01 10:00:00','2025-04-12 16:31:33','2025-04-13 06:43:33'),(2,1,'?','Freelancing',15000.00,'2025-04-05 12:30:00','2025-04-12 16:31:33','2025-04-13 06:43:33'),(3,1,'?','Gift',546800.00,'2025-04-10 18:45:00','2025-04-12 16:31:33','2025-04-12 21:38:05'),(4,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4b0.png','Salary',25000.00,'2025-04-13 10:30:00','2025-04-13 05:50:06','2025-04-13 05:50:06');
+INSERT INTO `income` VALUES (1,1,'?','Salary',9000.00,'2025-04-01 10:00:00','2025-04-12 16:31:33','2025-04-13 06:43:33'),(2,1,'?','Freelancing',15000.00,'2025-04-05 12:30:00','2025-04-12 16:31:33','2025-04-13 06:43:33'),(3,1,'?','Gift',546800.00,'2025-04-10 18:45:00','2025-04-12 16:31:33','2025-04-12 21:38:05'),(4,1,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4b0.png','Salary',25000.00,'2025-04-13 10:30:00','2025-04-13 05:50:06','2025-04-13 05:50:06'),(5,7,'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f957.png','Work',500000.00,'2025-04-13 00:00:00','2025-04-13 16:31:14','2025-04-13 16:31:14');
 /*!40000 ALTER TABLE `income` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +119,7 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Shivanshu Nigam','shivanshunigam18@petpooja.com','ef23848f62e176c5cac2df2c669c63a5dc2101d8',1,'2025-04-12 16:13:44'),(2,'Diwakar','Diwakar@gmail.com','9a24ace3390fd7d1c5f993997a4bb62260d5b3d0',1,'2025-04-13 08:32:31'),(3,'SHIVANSHU NIGAM','shivanshunigam8asdsdas@gmail.com','23d42f5f3f66498b2c8ff4c20b8c5ac826e47146',1,'2025-04-13 08:59:52'),(4,'shivanshu nigam','shivanshunigam8gmail..com','ef23848f62e176c5cac2df2c669c63a5dc2101d8',1,'2025-04-13 09:17:27');
+INSERT INTO `users` VALUES (1,'Shivanshu Nigam','shivanshunigam18@petpooja.com','ef23848f62e176c5cac2df2c669c63a5dc2101d8',1,'2025-04-12 16:13:44'),(2,'Diwakar','Diwakar@gmail.com','9a24ace3390fd7d1c5f993997a4bb62260d5b3d0',1,'2025-04-13 08:32:31'),(3,'SHIVANSHU NIGAM','shivanshunigam8asdsdas@gmail.com','23d42f5f3f66498b2c8ff4c20b8c5ac826e47146',1,'2025-04-13 08:59:52'),(4,'shivanshu nigam','shivanshunigam8gmail..com','ef23848f62e176c5cac2df2c669c63a5dc2101d8',1,'2025-04-13 09:17:27'),(5,'shivanshunigam8@gmail.com','shivanshunigam189@petpooja.com','62c1b0f17a6564d921a0ac66bbaabc7760f5fd13',1,'2025-04-13 16:26:03'),(7,'shivanshunigam8@gmail.com','shivanshunigam1894@petpooja.com','62c1b0f17a6564d921a0ac66bbaabc7760f5fd13',1,'2025-04-13 16:26:20');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,11 +304,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_getAllExpense`(
 BEGIN
     SELECT id, user_id, icon, category, amount, date, created_at, updated_at
     FROM expenses
-    WHERE user_id = p_userId
-        AND (p_category IS NULL OR category = p_category)
-        AND (p_fromDate IS NULL OR date >= p_fromDate)
-        AND (p_toDate IS NULL OR date <= p_toDate)
-    ORDER BY date DESC;
+  WHERE 
+    user_id = p_userId
+    AND (p_category IS NULL OR category = p_category)
+    AND (p_fromDate IS NULL OR p_toDate IS NULL OR DATE(date) BETWEEN p_fromDate AND p_toDate);
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -712,4 +712,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-13  9:22:45
+-- Dump completed on 2025-04-13 19:07:20
