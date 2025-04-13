@@ -1,3 +1,4 @@
+
 # 💸 Expense Tracker App
 
 A simple yet powerful full-stack **Expense Tracker** application built using **React**, **Node.js**, **Express**, and **SQL**. This app helps users track their daily spending, understand their financial habits, and stay in control with insightful statistics like top spending days, monthly trends, and even future spending predictions.
@@ -19,9 +20,9 @@ Built with a focus on clean architecture, performance, and a smooth user experie
 
 ## 🔥 Features
 
-- ➕ Add new **expenses** with amount, category, and date
-- ➕ Add new **income** with amount, source, and date
-- ❌ Delete existing expenses or income
+- ➕ Add new **expenses** with amount, category, and date  
+- ➕ Add new **income** with amount, source, and date  
+- ❌ Delete existing expenses or income  
 - 📊 View a **summary** of:
   - Expenses by category
   - Spending over date ranges
@@ -49,86 +50,29 @@ Built with a focus on clean architecture, performance, and a smooth user experie
 
 ---
 
-## 📸 Screenshots
+## 🔐 Authentication Note
 
-> *(Add screenshots in the `/screenshots` folder and replace these paths accordingly)*
-
-![Dashboard](./screenshots/dashboard.png)
-![Add Expense](./screenshots/add-expense.png)
-
----
-
-## 📦 Installation & Setup
-
-### 🔧 Backend Setup
-
-```bash
-git clone https://github.com/yourusername/expense-tracker.git
-cd expense-tracker/backend
-npm install
-```
-
-- Add your database credentials and other environment variables in a `.env` file.
-- Start the server:
-
-```bash
-npm start
-```
-
-### 🌐 Frontend Setup
-
-```bash
-cd ../frontend
-npm install
-npm run dev
-```
+- Login password is **encrypted on the frontend** using AES before being sent in the payload, ensuring it stays **hidden and secure** in transmission.
+- On the backend, the password is **decrypted and hashed** before checking with the database.
+- JWT-based login system is used for secure and persistent sessions.
 
 ---
 
-## 🧠 Folder Structure
+## 🗂️ Sample Credentials
 
-```
-expense-tracker/
-├── frontend/              # React + Tailwind frontend
-│   ├── components/
-│   ├── pages/
-│   └── ...
-└── backend/               # Node.js + Express backend
-    ├── controllers/
-    ├── routes/
-    ├── models/
-    ├── config/
-    └── ...
-```
+Use the following credentials to test login:
+- **Email**: `shivanshunigam18@petpooja.com`
+- **Password**: `shivanshunigam18@petpooja.com`
 
 ---
 
-## ✨ Future Enhancements
+## 🧾 SQL Setup
 
-- 📈 Graphs & data visualizations
-- 📱 Full mobile responsiveness
-- 🔐 Advanced authentication (JWT + refresh tokens)
-- 🧾 Export data to Excel/PDF
-- 🛎️ Alerts and budget threshold warnings
+- SQL database setup is included.
+- All required **tables and stored procedures** are provided in the `database/` directory.
 
 ---
 
-## 🙌 Contributing
+## 📂 .env File
 
-Contributions are welcome!  
-Feel free to open an issue or submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 👨‍💻 Author
-
-Created with ❤️ by **Shivanshu Nigam**  
-📧 [Email Me](mailto:shivanshunigam8@example.com)  
-
----
+Add this in your `backend/.env` file:
