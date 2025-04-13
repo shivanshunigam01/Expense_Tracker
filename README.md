@@ -76,3 +76,6 @@ Use the following credentials to test login:
 ## 📂 .env File
 
 Add this in your `backend/.env` file:
+PORT=5000
+JWT_SECRET="sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#"
+
