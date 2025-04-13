@@ -45,6 +45,10 @@ Built with a focus on clean architecture, performance, and a smooth user experie
 - [Express.js](https://expressjs.com/)
 - MVC Architecture
 
+- 
+## Postman Collection
+https://drive.google.com/file/d/1gmH64unNFsoXZ1nH8hX1fdSgidu_HiyG/view?usp=sharing
+
 ### Database
 - SQL (MySQL / PostgreSQL / SQLite)
 
@@ -78,4 +82,26 @@ Use the following credentials to test login:
 Add this in your `backend/.env` file:
 PORT=5000
 JWT_SECRET="sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#"
+
+# App Screenshots
+
+## Register Page
+![Register_page](https://github.com/user-attachments/assets/73d6b4aa-1ac4-4f03-8a80-de9eb907fda0)
+
+
+## Login Page
+![Login_page](https://github.com/user-attachments/assets/19abb3bc-d12b-4170-bebe-c66543ecf522)
+
+
+## Dashboard
+![Dashboard](https://github.com/user-attachments/assets/58d8d0ba-e1b7-4443-91a3-766cdb8c529d)
+
+
+## Income Page
+![Income_page](https://github.com/user-attachments/assets/da21ec98-cf91-4d9d-8b36-0a4dae637b15)
+
+
+## Expense Page
+![Expense_page](https://github.com/user-attachments/assets/dd9ba950-6fca-4d64-8d1c-a3bfd9053899)
+
 
