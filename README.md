@@ -1,8 +1,3 @@
-Sure Shivanshu! Here's your complete and polished `README.md` file content. You can copy this directly into a file named `README.md` in the root of your GitHub repository.
-
----
-
-```markdown
 # 💸 Expense Tracker App
 
 A simple yet powerful full-stack **Expense Tracker** application built using **React**, **Node.js**, **Express**, and **SQL**. This app helps users track their daily spending, understand their financial habits, and stay in control with insightful statistics like top spending days, monthly trends, and even future spending predictions.
@@ -134,12 +129,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## 👨‍💻 Author
 
 Created with ❤️ by **Shivanshu Nigam**  
-📧 [Email Me](mailto:your.email@example.com)  
-🔗 [LinkedIn](https://www.linkedin.com/in/yourprofile) <!-- Update this with your actual profile link -->
+📧 [Email Me](mailto:shivanshunigam8@example.com)  
 
 ---
-```
-
----
-
-Let me know if you'd like me to export this into a downloadable `.md` file or help with adding badges or hosting steps (e.g., on Render or Vercel)!
