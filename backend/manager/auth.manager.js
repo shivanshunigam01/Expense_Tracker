@@ -1,9 +1,8 @@
-const AuthData = require('../data/auth.data');  // Make sure this points to your correct path
-const bcrypt = require('bcryptjs');
+const AuthData = require('../data/auth.data');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-const authData = new AuthData();  
+const authData = new AuthData();
 
 /**
  * Auth Manager.
@@ -31,29 +30,29 @@ class AuthManager {
     async login(req) {
         try {
             const { email, password } = req;
-    
-            // 1. Fetch user data from DB
+
+
             const user = await authData.findUserByEmail(email);
             if (!user) {
                 throw new Error('User not found');
             }
-    
-            // 2. Hash the input password with SHA1 (same as signup)
+
+
             const hashedInputPassword = crypto.createHash('sha1').update(password).digest("hex");
-    
-            // 3. Compare hashed passwords
+
+
             if (hashedInputPassword !== user.password) {
                 throw new Error('Invalid password');
             }
-    
-            // 4. Create JWT Token
+
+
             const token = jwt.sign(
                 { userID: user.id, email: user.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '1d' }
             );
-    
-            // 5. Return token + user info
+
+
             return {
                 token,
                 user: {
@@ -62,7 +61,7 @@ class AuthManager {
                     email: user.email
                 }
             };
-    
+
         } catch (error) {
             throw error;
         }

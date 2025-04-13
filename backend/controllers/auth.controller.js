@@ -14,12 +14,12 @@ exports.signup = async (req, res) => {
             return apiResponse.unauthorizedResponse(res, "Signup failed");
         }
     } catch (error) {
-        // Check for MySQL duplicate entry error
+
         if (error.code === 'ER_DUP_ENTRY') {
             return apiResponse.validationErrorWithData(res, "Email already exists", {});
         }
 
-        // For all other errors
+
         return apiResponse.expectationFailedResponse(res, error);
     }
 };

@@ -13,7 +13,7 @@ class AuthData {
     async signup({ name, email, password }) {
         const procedureName = "SignupUser";
         const hashedPassword = crypto.createHash('sha1').update(password).digest("hex");
-    
+
         try {
             await db.query(`CALL ${procedureName}(?, ?, ?)`, [name, email, hashedPassword]);
             return { message: "Signup successful" };
@@ -35,8 +35,8 @@ class AuthData {
             throw error;
         }
     }
-    
-    
+
+
 
     /**
      * Get logged-in user's profile by ID
@@ -47,7 +47,7 @@ class AuthData {
         const procedureName = "GetUserData";
         try {
             const [user] = await db.query(`CALL ${procedureName}(?)`, [userID]);
-            return user[0]; // first result set
+            return user[0];
         } catch (error) {
             throw error;
         }

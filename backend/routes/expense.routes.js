@@ -21,7 +21,5 @@ router.get("/getChangePercentage", authMiddleware, expenseController.getChangePe
 // Delete Expense
 router.delete("/:id", authMiddleware, expenseController.deleteExpense);
 
-// Download Excel
-router.get("/download/excel", authMiddleware, expenseController.downloadExpenseExcel);
 
 module.exports = router;

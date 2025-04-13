@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
 } from "react-router-dom";
 
 import Login from "./pages/Auth/Login";
@@ -15,32 +15,32 @@ import UserProvider from "./context/userContext";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  return (
-    <UserProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Root />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/signUp" exact element={<SignUp />} />
-          <Route path="/dashboard" exact element={<Home />} />
-          <Route path="/income" exact element={<Income />} />
-          <Route path="/expense" exact element={<Expense />} />
-        </Routes>
-      </Router>
+    return (
+        <UserProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Root />} />
+                    <Route path="/login" exact element={<Login />} />
+                    <Route path="/signUp" exact element={<SignUp />} />
+                    <Route path="/dashboard" exact element={<Home />} />
+                    <Route path="/income" exact element={<Income />} />
+                    <Route path="/expense" exact element={<Expense />} />
+                </Routes>
+            </Router>
 
-      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-       
-    </UserProvider>
-  );
+            <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+
+        </UserProvider>
+    );
 }
 
 export default App;
 
 const Root = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  return isAuthenticated ? (
-    <Navigate to="/dashboard" />
-  ) : (
-    <Navigate to="/login" />
-  );
+    const isAuthenticated = !!localStorage.getItem("token");
+    return isAuthenticated ? (
+        <Navigate to="/dashboard" />
+    ) : (
+        <Navigate to="/login" />
+    );
 };

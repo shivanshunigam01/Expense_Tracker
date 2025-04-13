@@ -1,4 +1,3 @@
-// data/dashboardData.js
 const db = require('../config/db');
 
 class DashboardData {
@@ -9,8 +8,8 @@ class DashboardData {
         try {
             const [rows] = await db.query(`CALL ${procedureName}(?)`, [userID]);
 
-            const dashboardJSONRow = rows[0][0]; // First row containing JSON string
-            const recentTransactions = rows[1]; // Second row with raw transactions array
+            const dashboardJSONRow = rows[0][0];
+            const recentTransactions = rows[1];
             return {
                 totalBalance: parseFloat(dashboardJSONRow.total_balance),
                 totalIncome: parseFloat(dashboardJSONRow.total_income),

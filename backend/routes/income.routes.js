@@ -4,16 +4,13 @@ const incomeController = require("../controllers/income.controller");
 const authMiddleware = require('../middleware/auth.middleware');
 
 
-// Add Expense
+// Add Income
 router.post("/add", authMiddleware, incomeController.addIncome);
 
-// Get All Expenses
+// Get All Incomes
 router.get("/all", authMiddleware, incomeController.getAllIncome);
 
-// Delete Expense
+// Delete Income
 router.delete("/:id", authMiddleware, incomeController.deleteExpense);
-
-// Download Excel
-router.get("/download/excel", authMiddleware, incomeController.downloadExpenseExcel);
 
 module.exports = router;

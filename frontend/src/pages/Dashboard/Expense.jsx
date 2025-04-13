@@ -12,177 +12,178 @@ import DeleteAlert from "../../components/DeleteAlert";
 import ExpenseFilter from "../../components/Expense/ExpenseFilter";
 
 const Expense = () => {
-  useUserAuth();
-  const [expenseData, setExpenseData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [openDeleteAlert, setOpenDeleteAlert] = useState({
-    show: false,
-    data: null,
-  });
-  const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
-  const [filters, setFilters] = useState({
-    category: "",
-    fromDate: new Date(new Date().setDate(1)).toISOString().split('T')[0], // First day of current month
-    toDate: new Date().toISOString().split('T')[0], // Today
-  });
+    useUserAuth();
+    const [expenseData, setExpenseData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [openDeleteAlert, setOpenDeleteAlert] = useState({
+        show: false,
+        data: null,
+    });
+    const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
+    const [filters, setFilters] = useState({
+        category: "",
+        fromDate: new Date(new Date().setDate(1)).toISOString().split('T')[0],
+        toDate: new Date().toISOString().split('T')[0],
+    });
 
-  // Extract unique categories from expense data for filter dropdown
-  const categories = React.useMemo(() => {
-    const uniqueCategories = [...new Set(expenseData.map(expense => expense.category))];
-    return uniqueCategories;
-  }, [expenseData]);
 
-  const fetchExpenseDetails = async (filterParams = filters) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-     
-        const requestBody = {
-            p_userId: "",
-            p_category: filterParams.category || null,
-            p_fromDate: filterParams.fromDate,
-            p_toDate: filterParams.toDate
-        };
+    const categories = React.useMemo(() => {
+        const uniqueCategories = [...new Set(expenseData.map(expense => expense.category))];
+        return uniqueCategories;
+    }, [expenseData]);
 
-        const response = await axiosInstence.post(API_PATHS.EXPENSE.GET_ALL_EXPENSE, requestBody);
+    const fetchExpenseDetails = async (filterParams = filters) => {
+        if (loading) return;
+        setLoading(true);
+        try {
 
-        if (response.data && response.data.data) {
-            setExpenseData(response.data.data);
+            const requestBody = {
+                p_userId: "",
+                p_category: filterParams.category || null,
+                p_fromDate: filterParams.fromDate,
+
+                p_toDate: filterParams.toDate
+            };
+
+            const response = await axiosInstence.post(API_PATHS.EXPENSE.GET_ALL_EXPENSE, requestBody);
+
+            if (response.data && response.data.data) {
+                setExpenseData(response.data.data);
+            }
+        } catch (error) {
+            console.log("Something went wrong", error);
+            toast.error("Failed to fetch expense details.");
+        } finally {
+            setLoading(false);
         }
-    } catch (error) {
-        console.log("Something went wrong", error);
-        toast.error("Failed to fetch expense details.");
-    } finally {
-        setLoading(false);
-    }
-  };
+    };
 
-  // Handle filter changes
-  const handleApplyFilters = (newFilters) => {
-    setFilters(newFilters);
-    fetchExpenseDetails(newFilters);
-  };
+    // Handle filter changes
+    const handleApplyFilters = (newFilters) => {
+        setFilters(newFilters);
+        fetchExpenseDetails(newFilters);
+    };
 
-  // Handle Add expense
-  const handleAddExpense = async (expense) => {
-    const { category, amount, date, icon } = expense;
+    // Handle Add expense
+    const handleAddExpense = async (expense) => {
+        const { category, amount, date, icon } = expense;
 
-    if (!category.trim()) {
-      toast.error("Category is required.");
-      return;
-    }
+        if (!category.trim()) {
+            toast.error("Category is required.");
+            return;
+        }
 
-    if (!amount || isNaN(amount) || Number(amount) <= 0) {
-      toast.error("Amount should be a valid number greater than 0.");
-      return;
-    }
+        if (!amount || isNaN(amount) || Number(amount) <= 0) {
+            toast.error("Amount should be a valid number greater than 0.");
+            return;
+        }
 
-    if (!date) {
-      toast.error("Date is required.");
-      return;
-    }
+        if (!date) {
+            toast.error("Date is required.");
+            return;
+        }
 
-    try {
-      const response = await axiosInstence.post(API_PATHS.EXPENSE.ADD_EXPENSE, {
-        category,
-        amount,
-        date,
-        icon,
-      });
+        try {
+            const response = await axiosInstence.post(API_PATHS.EXPENSE.ADD_EXPENSE, {
+                category,
+                amount,
+                date,
+                icon,
+            });
 
-      if (response.data.success) {
-        setOpenAddExpenseModel(false);
-        toast.success("Expense added successfully.");
+            if (response.data.success) {
+                setOpenAddExpenseModel(false);
+                toast.success("Expense added successfully.");
+                fetchExpenseDetails();
+            } else {
+                toast.error("Failed to add expense.");
+            }
+        } catch (error) {
+            if (error.code === "ECONNABORTED") {
+                toast.error("Request timeout. Please try again later.");
+            } else {
+                console.error("Something went wrong while adding expense.", error);
+                toast.error("Something went wrong. Please try again.");
+            }
+        }
+    };
+
+    // Delete expense
+    const deleteExpense = async (id) => {
+        const expenseId = Number(id);
+        if (!expenseId || isNaN(expenseId)) {
+            toast.error("Invalid expense ID.");
+            return;
+        }
+
+        try {
+            await axiosInstence.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(expenseId));
+            setOpenDeleteAlert({ show: false, data: null });
+            toast.success("Expense deleted successfully.");
+            fetchExpenseDetails();
+        } catch (error) {
+            console.error("Error deleting expense.", error?.response?.data?.message || error.message);
+            toast.error("Failed to delete expense.");
+        }
+    };
+
+
+    useEffect(() => {
         fetchExpenseDetails();
-      } else {
-        toast.error("Failed to add expense.");
-      }
-    } catch (error) {
-      if (error.code === "ECONNABORTED") {
-        toast.error("Request timeout. Please try again later.");
-      } else {
-        console.error("Something went wrong while adding expense.", error);
-        toast.error("Something went wrong. Please try again.");
-      }
-    }
-  };
+    }, []);
 
-  // Delete expense
-  const deleteExpense = async (id) => {
-    const expenseId = Number(id);
-    if (!expenseId || isNaN(expenseId)) {
-      toast.error("Invalid expense ID.");
-      return;
-    }
+    return (
+        <DashboardLayout activeMenu="Expense">
+            <div className="my-5 mx-auto">
+                <div className="grid grid-cols-1 gap-6">
+                    <ExpenseOverview
+                        transactions={expenseData}
+                        onExpenseIncome={() => setOpenAddExpenseModel(true)}
+                    />
 
-    try {
-      await axiosInstence.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(expenseId));
-      setOpenDeleteAlert({ show: false, data: null });
-      toast.success("Expense deleted successfully.");
-      fetchExpenseDetails();
-    } catch (error) {
-      console.error("Error deleting expense.", error?.response?.data?.message || error.message);
-      toast.error("Failed to delete expense.");
-    }
-  };
+                    {/* Add the new ExpenseFilter component */}
+                    <ExpenseFilter
+                        categories={categories}
+                        onApplyFilters={handleApplyFilters}
+                    />
 
+                    <ExpenseList
+                        transactions={expenseData}
+                        onDelete={(id) => {
+                            const numericId = Number(id);
+                            if (!isNaN(numericId)) {
+                                setOpenDeleteAlert({ show: true, data: numericId });
+                            } else {
+                                toast.error("Invalid ID received for deletion.");
+                            }
+                        }}
+                        loading={loading}
+                    />
+                </div>
 
-  useEffect(() => {
-    fetchExpenseDetails();
-  }, []);
+                {/* Add Expense Modal */}
+                <Model
+                    isOpen={openAddExpenseModel}
+                    onClose={() => setOpenAddExpenseModel(false)}
+                    title="Add Expense"
+                >
+                    <AddExpenseForm onAddExpense={handleAddExpense} />
+                </Model>
 
-  return (
-    <DashboardLayout activeMenu="Expense">
-      <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 gap-6">
-          <ExpenseOverview
-            transactions={expenseData}
-            onExpenseIncome={() => setOpenAddExpenseModel(true)}
-          />
-          
-          {/* Add the new ExpenseFilter component */}
-          <ExpenseFilter 
-            categories={categories} 
-            onApplyFilters={handleApplyFilters} 
-          />
-
-          <ExpenseList
-            transactions={expenseData}
-            onDelete={(id) => {
-              const numericId = Number(id);
-              if (!isNaN(numericId)) {
-                setOpenDeleteAlert({ show: true, data: numericId });
-              } else {
-                toast.error("Invalid ID received for deletion.");
-              }
-            }}
-            loading={loading}
-          />
-        </div>
-
-        {/* Add Expense Modal */}
-        <Model
-          isOpen={openAddExpenseModel}
-          onClose={() => setOpenAddExpenseModel(false)}
-          title="Add Expense"
-        >
-          <AddExpenseForm onAddExpense={handleAddExpense} />
-        </Model>
-
-        {/* Delete Alert Modal */}
-        <Model
-          isOpen={openDeleteAlert.show}
-          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
-          title="Delete Expense"
-        >
-          <DeleteAlert
-            content="Are you sure you want to delete this expense detail?"
-            onDelete={() => deleteExpense(openDeleteAlert.data)}
-          />
-        </Model>
-      </div>
-    </DashboardLayout>
-  );
+                {/* Delete Alert Modal */}
+                <Model
+                    isOpen={openDeleteAlert.show}
+                    onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+                    title="Delete Expense"
+                >
+                    <DeleteAlert
+                        content="Are you sure you want to delete this expense detail?"
+                        onDelete={() => deleteExpense(openDeleteAlert.data)}
+                    />
+                </Model>
+            </div>
+        </DashboardLayout>
+    );
 };
 
 export default Expense;

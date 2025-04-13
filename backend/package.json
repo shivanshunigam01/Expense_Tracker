@@ -8,7 +8,7 @@
     "start": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Shivanshu-Nigam",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.2",
