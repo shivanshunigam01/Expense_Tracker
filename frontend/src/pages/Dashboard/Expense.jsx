@@ -36,9 +36,9 @@ const Expense = () => {
     if (loading) return;
     setLoading(true);
     try {
-        // Use filter parameters in the request
+     
         const requestBody = {
-            p_userId: 1, // You might want to make this dynamic based on the logged-in user
+            p_userId: "",
             p_category: filterParams.category || null,
             p_fromDate: filterParams.fromDate,
             p_toDate: filterParams.toDate
@@ -126,34 +126,6 @@ const Expense = () => {
     }
   };
 
-  // Handle download
-  const handleDownloadIncomeDetails = async () => {
-    try {
-      // Include current filters in the download request
-      const queryParams = new URLSearchParams({
-        category: filters.category || '',
-        fromDate: filters.fromDate,
-        toDate: filters.toDate
-      }).toString();
-      
-      const response = await axiosInstence.get(
-        `${API_PATHS.EXPENSE.DOWNLOAD_EXPENSE}?${queryParams}`, 
-        { responseType: "blob" }
-      );
-      
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "expense_details.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error Downloading expense details:", error);
-      toast.error("Failed to download expense details.");
-    }
-  };
 
   useEffect(() => {
     fetchExpenseDetails();
@@ -184,7 +156,6 @@ const Expense = () => {
                 toast.error("Invalid ID received for deletion.");
               }
             }}
-            onDownload={handleDownloadIncomeDetails}
             loading={loading}
           />
         </div>

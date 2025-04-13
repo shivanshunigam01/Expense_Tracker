@@ -22,4 +22,12 @@ pool.getConnection()
     process.exit(1); // stop the app if DB fails
   });
 
+
+  pool.on('enqueue', function (sequence) {
+    if (sequence.sql) {
+      console.log('[MySQL Procedure Called] =>', sequence.sql);
+    }
+  });
+  
+
 module.exports = pool;

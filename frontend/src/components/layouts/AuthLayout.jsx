@@ -1,5 +1,5 @@
 import React from "react";
-import EXPENSE_BANNER from "../../assets/images/expense_banner.jpg";
+import EXPENSE_BANNER from "../../assets/images/expense_banner.png";
 
 import { LuTrendingUpDown } from "react-icons/lu";
 function AuthLayout({ children }) {
@@ -26,7 +26,7 @@ function AuthLayout({ children }) {
 
         <img
           src={EXPENSE_BANNER}
-          className="w-70 lg:w-[90%] absolute bottom-10 shadow-lg shadow-blue-400/15 rounded-xl"
+          className="w-70 lg:w-[100%] absolute bottom-10 shadow-lg shadow-blue-400/15 rounded-xl"
         />
       </div>
     </div>

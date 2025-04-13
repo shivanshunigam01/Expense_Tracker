@@ -12,8 +12,8 @@ class IncomeData {
     return result;
   }
 
-  static async fetchExpensesByUser(userId) {
-    const [result] = await db.execute("CALL usp_getAllExpense(?)", [userId]);
+  static async fetchIncomeByUser(userId) {
+    const [result] = await db.execute("CALL usp_getAllIncome(?)", [userId]);
     return result[0];
   }
 

@@ -34,7 +34,7 @@ const Income = () => {
       );
 
       if (response.data) {
-        setIncomeData(response.data);
+        setIncomeData(response.data.data);
       }
     } catch (error) {
       console.log("Something went wrong", error);
@@ -92,29 +92,7 @@ const Income = () => {
       );
     }
   };
-  //handle Download income details
-  const handleDownloadIncomeDetails = async () => {
-    try {
-      const response = await axiosInstence.get(
-        API_PATHS.INCOME.DOWNLOAD_INCOME,
-        {
-          responseType: "blob",
-        }
-      );
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "income_details.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error Downloading income details:", error);
-      toast.error("Failed to download income details.");
-    }
-  };
-
+  
   useEffect(() => {
     fetchIncomeDetails();
 
@@ -136,7 +114,7 @@ const Income = () => {
             onDelete={(id) => {
               setOpenDeleteAlert({ show: true, data: id });
             }}
-            onDownload={handleDownloadIncomeDetails}
+          
           />
         </div>
         <Model

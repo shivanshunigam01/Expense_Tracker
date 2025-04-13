@@ -65,7 +65,6 @@ const Home = () => {
         setLoading(true);
         try {
             const response = await axiosInstence.get(API_PATHS.EXPENSE.GET_PERCENTAGE);
-            debugger
             if (response.data?.success) {
                 setPercentageChangeData(response.data.data);
             }
@@ -102,8 +101,8 @@ const Home = () => {
                         total_expense: parseFloat(item.total_spent)
                     })) || [],
                     // Predicted Next Month Spend from statisticData[1]
-                    predictedExpenditure: statisticData[1]?.[0]?.predicted_next_month_expense 
-                        ? parseFloat(statisticData[1][0].predicted_next_month_expense) 
+                    predictedExpenditure: statisticData[1]?.[0]?.predicted_next_month_expense
+                        ? parseFloat(statisticData[1][0].predicted_next_month_expense)
                         : 0,
                     // Set expenditure change value
                     expenditureChange: expenditureChange
@@ -257,34 +256,6 @@ const Home = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
-                            <div className="bg-gradient-to-r from-green-600 to-green-700 p-4">
-                                <h3 className="text-white font-semibold">Recent Income Distribution</h3>
-                            </div>
-                            <div className="p-4">
-                                <RecentIncomeWithChart
-                                    data={
-                                        dashboardData?.recentTransaction?.filter((t) => t.type === "income")?.slice(0, 4) ||
-                                        []
-                                    }
-                                    totalIncome={dashboardData?.totalIncome || 0}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
-                            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-4">
-                                <h3 className="text-white font-semibold">Recent Income</h3>
-                            </div>
-                            <div className="p-4">
-                                <RecentIncome
-                                    transaction={
-                                        dashboardData?.recentTransaction?.filter((t) => t.type === "income") || []
-                                    }
-                                    onSeeMore={() => navigate("/income")}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

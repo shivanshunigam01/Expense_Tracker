@@ -11,10 +11,10 @@ exports.addIncome = async (req, res) => {
   }
 };
 
-exports.getAllExpense = async (req, res) => {
+exports.getAllIncome = async (req, res) => {
   try {
-    const result = await incomeManager.getAllExpense(req);
-    return apiResponse.successResponseWithData(res, "Expenses fetched", result);
+    const result = await incomeManager.getAllIncome(req);
+    return apiResponse.successResponseWithData(res, "Income fetched", result);
   } catch (error) {
     return apiResponse.expectationFailedResponse(res, error.message);
   }

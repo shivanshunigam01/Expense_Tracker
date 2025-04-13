@@ -14,9 +14,9 @@ class IncomeManager {
     return await IncomeData.addIncome(userId, icon, category, amount, date);
   }
 
-  async getAllExpense(req) {
+  async getAllIncome(req) {
     const userId = req.user.userID;
-    return await IncomeData.fetchExpensesByUser(userId);
+    return await IncomeData.fetchIncomeByUser(userId);
   }
 
   async deleteExpense(expenseId) {

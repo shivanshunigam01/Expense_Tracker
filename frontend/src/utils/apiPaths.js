@@ -12,7 +12,7 @@ export const API_PATHS = {
   },
   INCOME: {
     ADD_INCOME: "income/add",
-    GET_ALL_INCOME: "income/get",
+    GET_ALL_INCOME: "income/all",
     DELETE_INCOME: (incomeid) => `income/delete/${incomeid}`,
     DOWNLOAD_INCOME: "income/downloadexcel",
   },
