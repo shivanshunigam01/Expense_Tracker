@@ -1,8 +1,10 @@
 const AuthData = require('../data/auth.data');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-
+const CryptoJS = require('crypto-js');
 const authData = new AuthData();
+
+const secretKey = "sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#";
 
 /**
  * Auth Manager.
@@ -31,27 +33,34 @@ class AuthManager {
         try {
             const { email, password } = req;
 
+            //  Decrypt password received from frontend
+            const bytes = CryptoJS.AES.decrypt(password, secretKey);
+            const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
 
+            if (!decryptedPassword) {
+                throw new Error('Failed to decrypt password');
+            }
+
+            //  Hash the decrypted password
+            const hashedInputPassword = crypto.createHash('sha1').update(decryptedPassword).digest("hex");
+
+            //  Find user by email
             const user = await authData.findUserByEmail(email);
             if (!user) {
                 throw new Error('User not found');
             }
 
-
-            const hashedInputPassword = crypto.createHash('sha1').update(password).digest("hex");
-
-
+            //  Check hashed password match
             if (hashedInputPassword !== user.password) {
                 throw new Error('Invalid password');
             }
 
-
+            //  Generate JWT token
             const token = jwt.sign(
                 { userID: user.id, email: user.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '1d' }
             );
-
 
             return {
                 token,
@@ -61,7 +70,6 @@ class AuthManager {
                     email: user.email
                 }
             };
-
         } catch (error) {
             throw error;
         }

@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const crypto = require('crypto');
 
+
 /**
  * Auth Data Layer.
  */

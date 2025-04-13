@@ -7,6 +7,7 @@ import axiosInstence from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/userContext";
 import { toast } from "react-hot-toast";
+import CryptoJS from "crypto-js";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -30,10 +31,12 @@ function Login() {
 
         setError("");
 
+        const secretKey = "sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#";
+        const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
         try {
             const response = await axiosInstence.post(API_PATHS.AUTH.LOGIN, {
                 email,
-                password,
+                password : encryptedPassword,
             });
 
             const { token, user } = response.data.data;
