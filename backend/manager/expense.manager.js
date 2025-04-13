@@ -16,7 +16,11 @@ class ExpenseManager {
 
     async getAllExpense(req) {
         const userId = req.user.userID;
-        const { p_category, p_fromDate, p_toDate } = req.body;
+        const p_category = req.body.p_category || null;
+        const p_fromDate = req.body.p_fromDate || null;
+
+        const p_toDate = req.body.p_toDate || null;
+
         return await ExpenseData.fetchExpensesByUser(userId, p_category, p_fromDate, p_toDate);
     }
 

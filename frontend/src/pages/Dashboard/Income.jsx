@@ -77,22 +77,7 @@ const Income = () => {
             console.error("Something went wrong. Error adding income");
         }
     };
-    // Delete Income
-    const deleteIncome = async (id) => {
-        try {
-            await axiosInstence.delete(API_PATHS.INCOME.DELETE_INCOME(id));
-
-            setOpenDeleteAlert({ show: false, data: null });
-            toast.success("Income details deleted successfully.");
-            fetchIncomeDetails();
-        } catch (error) {
-            console.error(
-                "Error deleting income.",
-                error.response?.data?.message || error.message
-            );
-        }
-    };
-
+   
     useEffect(() => {
         fetchIncomeDetails();
 
@@ -125,16 +110,7 @@ const Income = () => {
                     <AddIncomeForm onaAddIncome={handleAddIncome} />
                 </Model>
 
-                <Model
-                    isOpen={openDeleteAltert.show}
-                    onClose={() => setOpenDeleteAlert({ show: false, data: null })}
-                    title="Delete Income"
-                >
-                    <DeleteAlert
-                        content="Are you sure want to delete this income details?"
-                        onDelete={() => deleteIncome(openDeleteAltert.data)}
-                    />
-                </Model>
+
             </div>
         </DashboardLayout>
     );

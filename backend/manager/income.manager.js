@@ -4,7 +4,8 @@ const fs = require("fs");
 
 class IncomeManager {
     async addIncome(req) {
-        const { icon, category, amount, date } = req.body;
+        const category = req.body.source;
+        const { icon, amount, date } = req.body;
         const userId = req.user.userID;
 
         if (!icon || !category || !amount || !date) {

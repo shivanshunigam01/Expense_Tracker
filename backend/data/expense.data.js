@@ -12,14 +12,14 @@ class ExpenseData {
         return result;
     }
 
-    static async fetchExpensesByUser(userId, category = null, fromDate = null, toDate = null) {
+    static async fetchExpensesByUser(userId, p_category, p_fromDate, p_toDate) {
         const [result] = await db.execute("CALL usp_getAllExpense(?, ?, ?, ?)", [
             userId,
-            category,
-            fromDate,
-            toDate,
+            p_category,
+            p_fromDate,
+            p_toDate,
         ]);
-        return result[0];
+        return result;
     }
 
 

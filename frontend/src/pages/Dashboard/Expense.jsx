@@ -22,10 +22,9 @@ const Expense = () => {
     const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
     const [filters, setFilters] = useState({
         category: "",
-        fromDate: new Date(new Date().setDate(1)).toISOString().split('T')[0],
-        toDate: new Date().toISOString().split('T')[0],
+        fromDate: null,
+        toDate: null,
     });
-
 
     const categories = React.useMemo(() => {
         const uniqueCategories = [...new Set(expenseData.map(expense => expense.category))];
@@ -35,20 +34,27 @@ const Expense = () => {
     const fetchExpenseDetails = async (filterParams = filters) => {
         if (loading) return;
         setLoading(true);
+    
         try {
-
             const requestBody = {
-                p_userId: "",
-                p_category: filterParams.category || null,
-                p_fromDate: filterParams.fromDate,
-
-                p_toDate: filterParams.toDate
+                p_category: filterParams?.category?.trim() ? filterParams.category : null,
             };
-
+    
+            // Only include fromDate and toDate if user actually applied them
+            if (filterParams?.fromDate) {
+                requestBody.p_fromDate = filterParams.fromDate;
+            }
+            if (filterParams?.toDate) {
+                requestBody.p_toDate = filterParams.toDate;
+            }
+    
             const response = await axiosInstence.post(API_PATHS.EXPENSE.GET_ALL_EXPENSE, requestBody);
-
+    
             if (response.data && response.data.data) {
+                console.log("asdasdas",response.data.data)
                 setExpenseData(response.data.data);
+            } else {
+                setExpenseData([]);
             }
         } catch (error) {
             console.log("Something went wrong", error);
@@ -57,7 +63,7 @@ const Expense = () => {
             setLoading(false);
         }
     };
-
+    
     // Handle filter changes
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
@@ -141,14 +147,14 @@ const Expense = () => {
                         onExpenseIncome={() => setOpenAddExpenseModel(true)}
                     />
 
-                    {/* Add the new ExpenseFilter component */}
+                    {/* ExpenseFilter component */}
                     <ExpenseFilter
                         categories={categories}
                         onApplyFilters={handleApplyFilters}
                     />
 
                     <ExpenseList
-                        transactions={expenseData}
+                        transactions={expenseData[0]}
                         onDelete={(id) => {
                             const numericId = Number(id);
                             if (!isNaN(numericId)) {
