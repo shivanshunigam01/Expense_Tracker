@@ -143,7 +143,7 @@ const Expense = () => {
             <div className="my-5 mx-auto">
                 <div className="grid grid-cols-1 gap-6">
                     <ExpenseOverview
-                        transactions={expenseData}
+                        transactions={expenseData[0]}
                         onExpenseIncome={() => setOpenAddExpenseModel(true)}
                     />
 

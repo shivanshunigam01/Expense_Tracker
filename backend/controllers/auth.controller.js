@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
  */
 exports.login = async (req, res) => {
     try {
-        const result = await authManager.login(req.body);
+        const result = await authManager.login(req);
         if (result) {
             return apiResponse.successResponseWithData(res, "Login Successful", result);
         } else {

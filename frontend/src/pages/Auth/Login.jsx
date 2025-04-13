@@ -1,20 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
 import { validateEmail } from "../../utils/helper";
 import axiosInstence from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { UserContext } from "../../context/userContext";
 import { toast } from "react-hot-toast";
 import CryptoJS from "crypto-js";
+import { useDispatch } from "react-redux";
+import { LOGIN } from "../../context/auth-reducer/actions";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const { updateUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -33,17 +34,27 @@ function Login() {
 
         const secretKey = "sD3#7kP@!29zLr8q^T5vK0wZ!eF$YxN#";
         const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
+
         try {
             const response = await axiosInstence.post(API_PATHS.AUTH.LOGIN, {
                 email,
-                password : encryptedPassword,
+                password: encryptedPassword,
             });
 
             const { token, user } = response.data.data;
 
             if (token) {
                 localStorage.setItem("token", token);
-                updateUser(user);
+
+                
+                dispatch({
+                    type: LOGIN,
+                    payload: {
+                        user,
+                        isLoggedIn: true,
+                    },
+                });
+
                 toast.success("Login successful!");
                 navigate("/dashboard");
             } else {
@@ -52,8 +63,12 @@ function Login() {
         } catch (error) {
             const res = error?.response;
 
-
-            if (res && res.status === 417 && typeof res.data.message === "object" && Object.keys(res.data.message).length === 0) {
+            if (
+                res &&
+                res.status === 417 &&
+                typeof res.data.message === "object" &&
+                Object.keys(res.data.message).length === 0
+            ) {
                 toast.error("Something went wrong. Expectation Failed.");
             } else {
                 const errMessage =
@@ -62,8 +77,6 @@ function Login() {
                         : "Something went wrong. Please try again.";
                 toast.error(errMessage);
             }
-
-
         }
     };
 
