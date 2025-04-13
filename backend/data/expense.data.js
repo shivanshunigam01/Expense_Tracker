@@ -39,6 +39,15 @@ class ExpenseData {
     return result;
   }
   
+  
+  static async fetchChangePercentageByUser(userID) {
+    const [result] = await db.execute("CALL usp_GetMonthlyExpenditureChange(?)", [
+        userID,
+    ]);
+    return result;
+  }
+
+
   static async removeExpense(expenseId) {
     const [result] = await db.execute("CALL usp_deleteExpenseById(?)", [expenseId]);
     return result;

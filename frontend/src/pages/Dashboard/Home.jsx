@@ -6,7 +6,7 @@ import axiosInstence from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import InfoCard from "../../components/Cards/InfoCard";
 
-import { LuHandCoins, LuWalletMinimal } from "react-icons/lu";
+import { LuHandCoins, LuWalletMinimal, LuArrowUpRight, LuArrowDownRight, LuCalendar } from "react-icons/lu";
 import { IoMdCard } from "react-icons/io";
 import { addThousandsSeparator } from "../../utils/helper";
 import RecentTransactions from "../../components/Dashboard/RecentTransactions";
@@ -22,6 +22,8 @@ const Home = () => {
 
     const [dashboardData, setDashboardData] = useState(null);
     const [statisticData, setStatisticData] = useState(null);
+    const [PercentageChangeData, setPercentageChangeData] = useState(null);
+
     const [loading, setLoading] = useState(false);
 
     const fetchDashboardData = async () => {
@@ -56,9 +58,29 @@ const Home = () => {
         }
     };
 
+
+    const fetchChangePercentage = async () => {
+        if (loading) return;
+
+        setLoading(true);
+        try {
+            const response = await axiosInstence.get(API_PATHS.EXPENSE.GET_PERCENTAGE);
+            debugger
+            if (response.data?.success) {
+                setPercentageChangeData(response.data.data);
+            }
+        } catch (error) {
+            console.log("Something went wrong. Please try again.", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     useEffect(() => {
         fetchDashboardData();
         fetchStatistic();
+        fetchChangePercentage();
     }, []);
 
     // Process statistics data when it's available
@@ -90,136 +112,180 @@ const Home = () => {
         }
     }, [statisticData]);
 
-    const renderSpendingDays = () => {
-        const data = dashboardData?.top3ExpenseDays || [];
-        if (!data.length) return <p className="text-gray-500">No data available</p>;
-
-        return (
-            <ul className="list-disc pl-5 text-sm text-gray-700">
-                {data.map((item, idx) => (
-                    <li key={idx}>
-                        <span className="font-medium">{item.expense_date}</span>: ₹{addThousandsSeparator(item.total_expense)}
-                    </li>
-                ))}
-            </ul>
-        );
-    };
-
     return (
         <DashboardLayout activeMenu="Dashboard">
-            <div className="my-5 mx-auto">
-                {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <InfoCard
-                        icon={<IoMdCard />}
-                        label="Total Balance"
-                        value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
-                        color="bg-primary"
-                    />
-                    <InfoCard
-                        icon={<LuWalletMinimal />}
-                        label="Total Income"
-                        value={addThousandsSeparator(dashboardData?.totalIncome || 0)}
-                        color="bg-orange-500"
-                    />
-                    <InfoCard
-                        icon={<LuHandCoins />}
-                        label="Total Expense"
-                        value={addThousandsSeparator(dashboardData?.totalExpense || 0)}
-                        color="bg-red-500"
-                    />
-                </div> */}
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {/* 🔥 Top 3 Spending Days */}
-                    <InfoCard
-                        icon={<LuHandCoins />}
-                        label="Top 3 Spending Days"
-                        value={
-                            dashboardData?.top3ExpenseDays?.length > 0 ? (
-                                <div className="text-sm text-left">
-                                    {dashboardData.top3ExpenseDays.map((item, idx) => (
-                                        <div key={idx}>
-                                            <span className="font-medium">{item.expense_date}</span>: ₹
-                                            {addThousandsSeparator(item.total_expense)}
-                                        </div>
-                                    ))}
+            <div className="my-6 mx-auto max-w-7xl">
+                {/* Insights Section */}
+                <div className="mb-8">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Financial Insights</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* 🔥 Top 3 Spending Days */}
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-4 flex items-center">
+                                <div className="bg-white/20 p-3 rounded-lg">
+                                    <LuHandCoins className="text-white text-xl" />
                                 </div>
-                            ) : (
-                                "No data"
-                            )
-                        }
-                        color="bg-purple-500"
-                    />
+                                <h3 className="text-white font-semibold ml-3">Top 3 Spending Days</h3>
+                            </div>
+                            <div className="p-5">
+                                {dashboardData?.top3ExpenseDays?.length > 0 ? (
+                                    <div className="space-y-3">
+                                        {dashboardData.top3ExpenseDays.map((item, idx) => (
+                                            <div key={idx} className="flex justify-between items-center border-b border-gray-100 pb-2">
+                                                <span className="font-medium text-gray-700">{item.expense_date}</span>
+                                                <span className="text-purple-600 font-semibold">₹{addThousandsSeparator(item.total_expense)}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6 text-gray-500">No data available</div>
+                                )}
+                            </div>
+                        </div>
 
-                    {/* 📉 Monthly Expenditure Change */}
-                    <InfoCard
-                        icon={<LuWalletMinimal />}
-                        label="Expenditure Change"
-                        value={
-                            dashboardData?.expenditureChange > 0 ? (
-                                <span className="text-red-600 font-semibold">
-                                    ▲ {dashboardData.expenditureChange.toFixed(2)}%
-                                </span>
-                            ) : dashboardData?.expenditureChange < 0 ? (
-                                <span className="text-green-600 font-semibold">
-                                    ▼ {Math.abs(dashboardData.expenditureChange).toFixed(2)}%
-                                </span>
-                            ) : (
-                                <span className="text-gray-600">No Change</span>
-                            )
-                        }
-                        color="bg-yellow-500"
-                    />
+                        {/* 📉 Monthly Expenditure Change */}
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-4 flex items-center">
+                                <div className="bg-white/20 p-3 rounded-lg">
+                                    {dashboardData?.expenditureChange > 0 ? (
+                                        <LuArrowUpRight className="text-white text-xl" />
+                                    ) : (
+                                        <LuArrowDownRight className="text-white text-xl" />
+                                    )}
+                                </div>
+                                <h3 className="text-white font-semibold ml-3">Monthly Expenditure Change</h3>
+                            </div>
+                            <div className="p-5 flex justify-center items-center h-32">
+                                {dashboardData?.expenditureChange > 0 ? (
+                                    <div className="text-center">
+                                        <span className="text-3xl font-bold text-red-600 flex items-center justify-center">
+                                            <LuArrowUpRight className="mr-1" />
+                                            {PercentageChangeData?.[0][0].percentage_change}
+                                        </span>
+                                        <p className="text-gray-500 mt-2">Increase from last month</p>
+                                    </div>
+                                ) : dashboardData?.expenditureChange < 0 ? (
+                                    <div className="text-center">
+                                        <span className="text-3xl font-bold text-green-600 flex items-center justify-center">
+                                            <LuArrowDownRight className="mr-1" />
+                                            {Math.abs(dashboardData.expenditureChange).toFixed(2)}%
+                                        </span>
+                                        <p className="text-gray-500 mt-2">Decrease from last month</p>
+                                    </div>
+                                ) : (
+                                    <div className="text-center">
+                                        <span className="text-3xl font-bold text-gray-600">0%</span>
+                                        <p className="text-gray-500 mt-2">No change from last month</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
-                    {/* 📅 Predicted Next Month Spend */}
-                    <InfoCard
-                        icon={<IoMdCard />}
-                        label="Predicted Next Month Spend"
-                        value={`${addThousandsSeparator(dashboardData?.predictedExpenditure || 0)}`}
-                        color="bg-blue-500"
-                    />
+                        {/* 📅 Predicted Next Month Spend */}
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 flex items-center">
+                                <div className="bg-white/20 p-3 rounded-lg">
+                                    <LuCalendar className="text-white text-xl" />
+                                </div>
+                                <h3 className="text-white font-semibold ml-3">Predicted Next Month Spend</h3>
+                            </div>
+                            <div className="p-5 flex justify-center items-center h-32">
+                                <div className="text-center">
+                                    <span className="text-3xl font-bold text-blue-600">
+                                        ₹{addThousandsSeparator(dashboardData?.predictedExpenditure || 0)}
+                                    </span>
+                                    <p className="text-gray-500 mt-2">Based on your spending patterns</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* 🧾 Other Dashboard Widgets */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <RecentTransactions
-                        transaction={dashboardData?.recentTransaction || []}
-                        onSeeMore={() => navigate("/expense")}
-                    />
+                {/* Activity & Analysis Section */}
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Activity & Analysis</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-4">
+                                <h3 className="text-white font-semibold">Recent Transactions</h3>
+                            </div>
+                            <div className="p-4">
+                                <RecentTransactions
+                                    transaction={dashboardData?.recentTransaction || []}
+                                    onSeeMore={() => navigate("/expense")}
+                                />
+                            </div>
+                        </div>
 
-                    <FinanceOverview
-                        totalBalance={dashboardData?.totalBalance || 0}
-                        totalIncome={dashboardData?.totalIncome || 0}
-                        totalExpense={dashboardData?.totalExpense || 0}
-                    />
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 p-4">
+                                <h3 className="text-white font-semibold">Finance Overview</h3>
+                            </div>
+                            <div className="p-4">
+                                <FinanceOverview
+                                    totalBalance={dashboardData?.totalBalance || 0}
+                                    totalIncome={dashboardData?.totalIncome || 0}
+                                    totalExpense={dashboardData?.totalExpense || 0}
+                                />
+                            </div>
+                        </div>
 
-                    <ExpenseTransactions
-                        transaction={
-                            dashboardData?.recentTransaction?.filter((t) => t.type === "expense") || []
-                        }
-                        onSeeMore={() => navigate("/expense")}
-                    />
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-red-600 to-red-700 p-4">
+                                <h3 className="text-white font-semibold">Expense Transactions</h3>
+                            </div>
+                            <div className="p-4">
+                                <ExpenseTransactions
+                                    transaction={
+                                        dashboardData?.recentTransaction?.filter((t) => t.type === "expense") || []
+                                    }
+                                    onSeeMore={() => navigate("/expense")}
+                                />
+                            </div>
+                        </div>
 
-                    <Last30DaysExpenses
-                        data={
-                            dashboardData?.recentTransaction?.filter((t) => t.type === "expense") || []
-                        }
-                    />
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4">
+                                <h3 className="text-white font-semibold">Last 30 Days Expenses</h3>
+                            </div>
+                            <div className="p-4">
+                                <Last30DaysExpenses
+                                    data={
+                                        dashboardData?.recentTransaction?.filter((t) => t.type === "expense") || []
+                                    }
+                                />
+                            </div>
+                        </div>
 
-                    <RecentIncomeWithChart
-                        data={
-                            dashboardData?.recentTransaction?.filter((t) => t.type === "income")?.slice(0, 4) ||
-                            []
-                        }
-                        totalIncome={dashboardData?.totalIncome || 0}
-                    />
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-green-600 to-green-700 p-4">
+                                <h3 className="text-white font-semibold">Recent Income Distribution</h3>
+                            </div>
+                            <div className="p-4">
+                                <RecentIncomeWithChart
+                                    data={
+                                        dashboardData?.recentTransaction?.filter((t) => t.type === "income")?.slice(0, 4) ||
+                                        []
+                                    }
+                                    totalIncome={dashboardData?.totalIncome || 0}
+                                />
+                            </div>
+                        </div>
 
-                    <RecentIncome
-                        transaction={
-                            dashboardData?.recentTransaction?.filter((t) => t.type === "income") || []
-                        }
-                        onSeeMore={() => navigate("/income")}
-                    />
+                        <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+                            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-4">
+                                <h3 className="text-white font-semibold">Recent Income</h3>
+                            </div>
+                            <div className="p-4">
+                                <RecentIncome
+                                    transaction={
+                                        dashboardData?.recentTransaction?.filter((t) => t.type === "income") || []
+                                    }
+                                    onSeeMore={() => navigate("/income")}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </DashboardLayout>

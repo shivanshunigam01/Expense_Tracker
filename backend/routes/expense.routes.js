@@ -15,6 +15,7 @@ router.get("/getCategory", authMiddleware, expenseController.getCategory);
 
 //Get statistics
 router.get("/getStatistics", authMiddleware, expenseController.getstatistics);
+router.get("/getChangePercentage", authMiddleware, expenseController.getChangePercentage);
 
 
 // Delete Expense

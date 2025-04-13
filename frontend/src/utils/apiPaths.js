@@ -22,7 +22,9 @@ export const API_PATHS = {
     DELETE_EXPENSE: (id) => `/expenses/${id}`,
     DOWNLOAD_EXPENSE: "expense/downloadexcel",
     GET_CATEGORY:"expenses/getCategory",
-    GET_STATISTICS:"expenses/getStatistics"
+    GET_STATISTICS:"expenses/getStatistics",
+    GET_PERCENTAGE:"expenses/getChangePercentage"
+
 
   },
   IMAGE: {

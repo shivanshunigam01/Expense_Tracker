@@ -31,6 +31,12 @@ class ExpenseManager {
     const userId = req.user.userID;
     return await ExpenseData.fetchStatisticsByUser(userId);
   }
+
+  
+  async getChangePercentage(req) {
+    const userId = req.user.userID;
+    return await ExpenseData.fetchChangePercentageByUser(userId);
+  }
   async deleteExpense(expenseId) {
     return await ExpenseData.removeExpense(expenseId);
   }

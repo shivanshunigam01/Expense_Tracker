@@ -41,6 +41,16 @@ exports.getCategory = async (req, res) => {
   };
   
 
+  
+  exports.getChangePercentage = async (req, res) => {
+    try {
+      const result = await expenseManager.getChangePercentage(req);
+      return apiResponse.successResponseWithData(res, "Statistics for Percentage changed fetched", result);
+    } catch (error) {
+      return apiResponse.expectationFailedResponse(res, error.message);
+    }
+  };
+
 exports.deleteExpense = async (req, res) => {
   try {
     const result = await expenseManager.deleteExpense(req.params.id);
